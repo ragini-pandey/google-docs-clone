@@ -1,14 +1,13 @@
-import { useState } from 'react'
-import TextEditor from './TextEditor'
-import "./styles.css"
+import { useState } from 'react';
+import TextEditor from './TextEditor';
+import './styles.css';
 
 function App() {
-
   return (
     <>
-      <TextEditor/>
+      <TextEditor />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
