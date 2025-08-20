@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import 'quill/dist/quill.snow.css';
 import Quill from 'quill';
 import { io } from 'socket.io-client';
+import { useParams } from 'react-router';
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -18,9 +19,10 @@ const TOOLBAR_OPTIONS = [
 function TextEditor() {
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
+  const { documentId } = useParams();
 
   useEffect(() => {
-    const s = io('http://localhost:3001');
+    const s = io(import.meta.env.VITE_SERVER_URL);
     setSocket(s);
 
     return () => {
@@ -36,6 +38,8 @@ function TextEditor() {
     wrapper.append(editor);
 
     const q = new Quill(editor, { theme: 'snow', modules: { toolbar: TOOLBAR_OPTIONS } });
+    q.disable();
+    q.setText('Loading');
     setQuill(q);
   }, []);
 
@@ -43,7 +47,7 @@ function TextEditor() {
     if (socket == null || quill == null) return;
 
     const handler = (delta, oldDelta, source) => {
-      if (source !== "user") return;
+      if (source !== 'user') return;
       socket.emit('send-changes', delta);
     };
     quill.on('text-change', handler);
@@ -63,6 +67,26 @@ function TextEditor() {
 
     return () => {
       socket.off('receive-changes', handler);
+    };
+  }, [socket, quill]);
+
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+    socket.once('load-document', (data) => {
+      quill.setContents(data);
+      quill.enable();
+    });
+    socket.emit('get-document', documentId);
+  }, [socket, quill, documentId]);
+
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+
+    const interval = setInterval(() => {
+      socket.emit('save-document', quill.getContents());
+    }, 2000);
+    return () => {
+      clearInterval(interval);
     };
   }, [socket, quill]);
 

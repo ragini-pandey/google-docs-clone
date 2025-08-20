@@ -1,15 +1,29 @@
 {
-  "name": "y",
+  "name": "server",
+  "private": false,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend for Google Docs clone using Socket.IO and MongoDB",
+  "main": "server.js",
   "scripts": {
-    "devStart" : "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
-  "author": "",
+  "keywords": [
+    "google-docs-clone",
+    "socket.io",
+    "mongodb",
+    "realtime",
+    "collaboration"
+  ],
+  "author": "Ragini Pandey",
   "license": "ISC",
   "dependencies": {
-    "socket.io": "^4.8.1"
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "mongoose": "^5.12.4",
+    "socket.io": "^4.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
