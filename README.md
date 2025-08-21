@@ -12,6 +12,7 @@ Live app: [Access the Live Demo](https://google-docs-clone-zv83.onrender.com)
 
 ## 🎥 Demo Video
 
+<img src="https://github.com/ragini-pandey/google-docs-clone/blob/master/client/public/demo.gif" alt="Demo Video">
 
 ---
 
